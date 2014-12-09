@@ -1,0 +1,4 @@
+include MANIFEST.in
+include Makefile
+include PrimeMinisters.py
+recursive-include PrimeMinisters.app *
