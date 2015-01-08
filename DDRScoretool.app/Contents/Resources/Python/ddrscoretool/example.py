@@ -43,7 +43,7 @@ class Example(object):
                 detail_data = getter_data.get_detail_page(id,diff,opener)
                 if detail_data == "NoPlay":
                     continue
-                print "id:"+str(id)+" diff:"+str(diff)+" detail:"+str(detail_data[1])
+                print "id:"+str(id)+" diff:"+str(diff)+" detail:"+str(detail_data)
                 play_data_base.add_level(id,diff,detail_data[1])
                
                

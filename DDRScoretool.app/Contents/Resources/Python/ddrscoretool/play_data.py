@@ -64,16 +64,19 @@ class Play_data:
         html_getter = html_get.Html_get(music_id)
         a_url = 'http://p.eagate.573.jp/game/ddr/ac/p/playdata/music_detail.html?index='+str(music_id)+'&diff='+str(diff)
         a_html = html_getter.url_html_get(opener,a_url)
+        print "id:"+str(music_id)+" diff:"+str(diff)
         a_play_count = self.play_count(a_html)
         if a_play_count == 0:
             return "NoPlay"
         a_level = self.play_level(a_html)
-        data_music = [play_count,play_level]
+        a_clear = self.clear_count(a_html)
+        data_music = [a_play_count,a_clear,a_level]
         return data_music
         
 
     """レベル"""
     def play_level(self,a_html):
+        print "Search level"
         a_high_score_pat = re.compile('<th>最高ダンスレベル</th><td>(E|D|C|B|A*)</td>')
         level = a_high_score_pat.search(a_html)
         if not level is None:
@@ -82,9 +85,18 @@ class Play_data:
         
     """プレイ回数 """
     def play_count(self,a_html):
-        a_play_count_pat = re.compile('<th>プレー回数</th><td>([0-9]*)</td>')
+        print "Count Play"
+        a_play_count_pat = re.compile('[^ア]回数</th><td>([0-9]*)</td>')
         count = a_play_count_pat.search(a_html)
+        print count
         if not count is None:
             return count.group(1)
         return 0
-        return None
+
+    def clear_count(self,a_html):
+        print "Count Clear"
+        a_clear_pat = re.compile('ア回数</th><td>([0-9]*)</td>')
+        count = a_clear_pat.search(a_html)
+        if not count is None:
+            return count.group(1)
+        return 0
