@@ -59,7 +59,7 @@ class Play_data:
 
     """詳細なプレイデータのページの取得 """
     def get_detail_page(self,music_id,diff,opener):
-        """[プレイ回数,クリア回数,最高コンボ,フルコンボ,最終プレイ時間,全一比較,レベル]"""
+        """[プレイ回数,クリア回数,最高コンボ,フルコンボ,最終プレイ時間,全一比較,全一スコア,全一人物,レベル]"""
         data_music = []
         html_getter = html_get.Html_get(music_id)
         a_url = 'http://p.eagate.573.jp/game/ddr/ac/p/playdata/music_detail.html?index='+str(music_id)+'&diff='+str(diff)
@@ -70,7 +70,10 @@ class Play_data:
             return "NoPlay"
         a_level = self.play_level(a_html)
         a_clear = self.clear_count(a_html)
-        data_music = [a_play_count,a_clear,a_level]
+        a_max_combo = self.max_combo(a_html)
+        top_who = self.top(a_html)
+        top_score = self.top_score(a_html)
+        data_music = [a_play_count,a_clear,a_max_combo,top_score,top_who,a_level]
         return data_music
         
 
@@ -93,10 +96,37 @@ class Play_data:
             return count.group(1)
         return 0
 
+    """クリア回数"""
     def clear_count(self,a_html):
         print "Count Clear"
         a_clear_pat = re.compile('ア回数</th><td>([0-9]*)</td>')
         count = a_clear_pat.search(a_html)
         if not count is None:
             return count.group(1)
+        return 0
+
+    """最大コンボ数"""
+    def max_combo(self,a_html):
+        print("Max Combo");
+        a_max_combo_pat = re.compile('最大コンボ数</th><td>([0-9]*)</td>')
+        combo = a_max_combo_pat.search(a_html)
+        if not combo is None:
+            return combo.group(1)
+        return 0
+
+    """全国トップ"""
+    def top(self,a_html):
+        print("World Record")
+        a_pat = re.compile('全国トップ</p>(.*)<span style="float:right;">([0-9]*)</span>')
+        a_who = a_pat.search(a_html)
+        if not a_who is None:
+            return a_who.group(1)
+        return 0
+
+    """全国トップスコア"""
+    def top_score(self,a_html):
+        a_pat = re.compile('全国トップ</p>.*<span style="float:right;">([0-9]*)</span>')
+        a_score = a_pat.search(a_html)
+        if not a_score is None:
+            return a_score.group(1)
         return 0

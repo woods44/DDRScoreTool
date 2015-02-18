@@ -9,21 +9,28 @@ class Data_base:
         self.music_data = sqlite3.connect("music_info.db")
         self.music_data.text_factory = str
         try:
-            print("Create music infomation data base")
+            print("Create music information data base")
             sql = "create table music(id integer primary key,name String);"
             self.music_data.execute(sql)
         except sqlite3.Error,e:
             print "An error sql",e.args[0]
         try:
-            print("Create music infomation table")
+            print("Create music information table")
             sql = "create table score(id integer,diff integer,score integer);"
             self.music_data.execute(sql)
         except sqlite3.Error,e:
             print "An error sql",e.args[0]
         print("Create music score table")
         try:
-            print("Create music infomation data base")
+            print("Create music information data base")
             sql = "create table level(id integer,diff integer,level String);"
+            self.music_data.execute(sql)
+        except sqlite3.Error,e:
+            print "An error sql",e.args[0]
+
+        try:
+            print("Create music information data base")
+            sql = "create table top(id integer,diff integer,name String,score integer);"
             self.music_data.execute(sql)
         except sqlite3.Error,e:
             print "An error sql",e.args[0]
@@ -49,7 +56,7 @@ class Data_base:
             try:
                 self.music_data.execute(sql,(id,diff,score))
             except sqlite3.Error,e:
-                print "Error"
+                print "Error",e.args[0]
         self.music_data.commit()
         return None
 
@@ -62,4 +69,13 @@ class Data_base:
             print "Error",e.args[0]
         self.music_data.commit()
         return None
-        
+
+    """全国を登録"""
+    def add_top(self,index,diff,name,score):
+        sql = "insert into top values(?,?,?,?)"
+        try:
+            self.music_data.execute(sql,(index,diff,name,score))
+        except sqlite3.Error,e:
+            print "Error",e.args[0]
+        self.music_data.commit()
+        return None

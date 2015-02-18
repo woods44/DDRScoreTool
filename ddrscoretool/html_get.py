@@ -14,7 +14,7 @@ class Html_get:
     def html_get(self,opener,a_page_number):
         a_request = opener.open(self.play_data_url)
         a_html = a_request.read()
-        print("end to load html No."+str(a_page_number)+"file.")
+        print("end to load html No."+str(a_page_number)+" file.")
         return a_html
 
     def url_html_get(self,opener,a_url):

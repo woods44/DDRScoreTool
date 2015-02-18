@@ -1,0 +1,21 @@
+<html>
+<head><title>test PHP</title></head>
+<body>
+
+<?php
+
+$link = sqlite_open('music_info.db',0666,$sqliteerror);
+if(!$link){
+	die('接続失敗'.$sqliteerror);
+}
+
+print('接続に成功しました.<br>');
+
+sqlite_close($link);
+
+print('切断しました.<br>');
+
+?>
+
+</body>
+</hrml>
